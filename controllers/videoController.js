@@ -1,5 +1,6 @@
 import routes from "../routes";
 import Video from "../models/Video";
+import User from "../models/User";
 import Comment from "../models/Comment";
 
 export const home = async (req, res) => {
@@ -54,8 +55,14 @@ export const videoDetail = async (req, res) => {
 
   try {
     const video = await Video.findById(id)
-      .populate("creator")
-      .populate("comments");
+      .populate({
+        path: "comments",
+        populate: {
+          path: "creator",
+          model: User
+        }
+      })
+      .populate("creator");
     res.render("videoDetail", { pageTitle: video.title, video });
   } catch (error) {
     res.redirect(routes.home);
@@ -129,8 +136,6 @@ export const postRegisterView = async (req, res) => {
   }
 };
 
-// Add Comment
-
 export const postAddComment = async (req, res) => {
   const {
     params: { id },
@@ -145,8 +150,41 @@ export const postAddComment = async (req, res) => {
     });
     video.comments.push(newComment.id);
     video.save();
+    res.send(JSON.stringify(newComment));
   } catch (error) {
     res.status(400);
+  } finally {
+    res.end();
+  }
+};
+
+// DELETE comment
+export const postRemoveComment = async (req, res) => {
+  const {
+    params: { id, commentId },
+    user
+  } = req;
+  try {
+    const video = await Video.findById(id).populate("comments");
+    const comment = await Comment.findById(commentId);
+    console.log(comment, "*****", comment.creator, user.id);
+    if (String(comment.creator) !== user.id) {
+      throw "Comment can be deleted only writer!";
+      return;
+    }
+    await video.comments.pull(commentId);
+    video.save();
+    await Comment.findByIdAndDelete(commentId);
+    res.status(200);
+    res.send("done!");
+  } catch (error) {
+    console.log(error);
+    res.status(400);
+    res.send(
+      JSON.stringify({
+        error
+      })
+    );
   } finally {
     res.end();
   }

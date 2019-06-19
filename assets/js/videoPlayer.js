@@ -6,6 +6,7 @@ const fullScrnBtn = document.getElementById("jsFullScreen");
 const currentTime = document.getElementById("currentTime");
 const totalTime = document.getElementById("totalTime");
 const volumeRange = document.getElementById("jsVolume");
+// const timelineRange = document.getElementById("timelineRange");
 
 const registerView = () => {
   const videoId = window.location.href.split("/videos/")[1];
@@ -109,6 +110,16 @@ function handleDrag(event) {
   }
 }
 
+// TODO: VIDEO TIMELINE
+// function handleTimeline(event) {
+//   const {
+//     target: { value }
+//   } = event;
+//   let timelinePos = videoPlayer.currentTime / videoPlayer.duration;
+//   timelineRange.style.max = videoPlayer.duration;
+//   timelineRange.value = timelinePos * 100;
+// }
+
 function init() {
   videoPlayer.volume = 0.5;
   playBtn.addEventListener("click", handlePlayClick);
@@ -117,6 +128,7 @@ function init() {
   videoPlayer.addEventListener("loadedmetadata", setTotalTime);
   videoPlayer.addEventListener("ended", handleEnded);
   volumeRange.addEventListener("input", handleDrag);
+  // videoPlayer.addEventListener("timeupdate", handleTimeline);
 }
 
 if (videoContainer) {

@@ -7,7 +7,7 @@ block content
             src:video.fileUrl
         })
         .video__info
-            if loggedUser && video.creator.id === loggedUser.id
+            if loggedUser && (video.creator.id === loggedUser.id)
                 a(href=routes.editVideo(video.id))
                     button Edit video
             h5.video__title=video.title
@@ -21,11 +21,25 @@ block content
                 a(href=routes.userDetail(video.creator.id))=video.creator.name
         .video__comments
             if video.comments.length === 1
-                span.video__comment-number 1 comment
+                span.video__comment-number
+                    span#jsCommentNumber 1
+                    |  comment
             else
-                span.video__comment-number #{video.comments.length} comments
+                span.video__comment-number
+                    span#jsCommentNumber=video.comments.length
+                    |  comments
             form.add__comment#jsAddComment
                 input(type="text", placeholder="Add a Comment")
-            ul.video__comments-list
-                each comment in video.comments
-                    span comment.text
+            ul.video__comments-list#jsCommentList
+                each comment in video.comments.reverse()
+                    li
+                        .video__comments-avatar
+                            img.m-avatar(src=comment.creator.avatarUrl)
+                        .video__comments-content
+                            span.video__comments-creator
+                                a(href=routes.userDetail(comment.creator.id))=comment.creator.name
+                            span.video__comments-text#jsComment=comment.text
+                        if loggedUser && (String(comment.creator.id) === loggedUser.id)
+                            span.comment__delete
+                                i.fas.fa-trash-alt
+                                span.comment__delete-id=comment._id

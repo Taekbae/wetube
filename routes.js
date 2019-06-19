@@ -35,6 +35,7 @@ const GOOGLE_CALLBACK = "/auth/google/callback";
 const API = "/api";
 const REGISTER_VIEW = "/:id/view";
 const ADD_COMMENT = "/:id/comment";
+const REMOVE_COMMENT = "/:id/comment/:commentId/remove";
 
 const routes = {
   home: HOME,
@@ -84,7 +85,8 @@ const routes = {
   me: ME,
   api: API,
   registerView: REGISTER_VIEW,
-  addComment: ADD_COMMENT
+  addComment: ADD_COMMENT,
+  removeComment: REMOVE_COMMENT
 };
 
 export default routes;
