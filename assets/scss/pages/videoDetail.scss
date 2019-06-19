@@ -2,10 +2,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
   .video__info {
     width: 100%;
     max-width: 640px;
     margin-top: 25px;
+    margin-bottom: 50px;
     button {
       width: 100px;
       margin-bottom: 25px;
@@ -50,7 +52,7 @@
       li {
         display: flex;
         align-items: center;
-        background-color: #3498db;
+        background-color: $primarylight;
         color: white;
         padding: 13px;
         border-radius: 20px;

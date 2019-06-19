@@ -39,12 +39,12 @@ textarea,
 }
 button {
   border: none;
-  background-color: #3498db;
+  background-color: $primarylight;
   color: white;
 }
 
 button.delete {
-  background-color: $dark-red;
+  background-color: $primarydark;
 }
 
 button,
